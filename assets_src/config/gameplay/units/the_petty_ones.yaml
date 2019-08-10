@@ -37,14 +37,4 @@ modifyingUnitClasses:
       verbs:
         - pet   # This adds pet to the soldier verbs
 
-  - id: harpy
-    add:
-      verbs:
-        - pet   # This adds pet to the soldier verbs
-
-  - id: witch
-    add:
-      verbs:
-        - pet   # This adds pet to the soldier verbs
-
 ...

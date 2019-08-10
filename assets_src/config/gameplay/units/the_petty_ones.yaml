@@ -7,7 +7,7 @@ modifyingUnitClasses:
       verbs:
         - pet   # This adds pet to the soldier verbs
 
-  - id: pikeman
+  - id: spearman
     add:
       verbs:
         - pet   # This adds pet to the soldier verbs
@@ -17,7 +17,32 @@ modifyingUnitClasses:
       verbs:
         - pet   # This adds pet to the soldier verbs
 
-  - id: alchemist
+  - id: knight
+    add:
+      verbs:
+        - pet   # This adds pet to the soldier verbs
+
+  - id: mage
+    add:
+      verbs:
+        - pet   # This adds pet to the soldier verbs
+
+  - id: merman
+    add:
+      verbs:
+        - pet   # This adds pet to the soldier verbs
+
+  - id: villager
+    add:
+      verbs:
+        - pet   # This adds pet to the soldier verbs
+
+  - id: harpy
+    add:
+      verbs:
+        - pet   # This adds pet to the soldier verbs
+
+  - id: witch
     add:
       verbs:
         - pet   # This adds pet to the soldier verbs

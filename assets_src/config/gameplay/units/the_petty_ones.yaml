@@ -1,0 +1,25 @@
+---
+
+# This adds pet to the soldier verb list
+modifyingUnitClasses:
+  - id: soldier
+    add:
+      verbs:
+        - pet   # This adds pet to the soldier verbs
+
+  - id: pikeman
+    add:
+      verbs:
+        - pet   # This adds pet to the soldier verbs
+
+  - id: archer
+    add:
+      verbs:
+        - pet   # This adds pet to the soldier verbs
+
+  - id: alchemist
+    add:
+      verbs:
+        - pet   # This adds pet to the soldier verbs
+
+...

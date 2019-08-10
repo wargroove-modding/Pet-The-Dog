@@ -1,0 +1,8 @@
+---
+
+# This is the string configuration file for English.
+en-GB:
+  # Pet Verb
+  ui_unit_verbs_pet: Pet
+  
+...

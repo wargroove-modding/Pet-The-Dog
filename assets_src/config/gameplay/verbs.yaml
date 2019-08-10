@@ -1,0 +1,14 @@
+---
+
+verbs:
+  - id: pet
+    icon: ui/icons/unit_action_icon_pet.png
+    name: ui_unit_verbs_pet
+    targetColour: target
+    targetOutlineColour: target_outline
+    targetted: true
+    directTarget: true                                  # This verb targets a specific unit
+    scriptName: verbs/pet
+    aiUses: true
+
+...

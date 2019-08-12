@@ -5,36 +5,110 @@ modifyingUnitClasses:
   - id: soldier
     add:
       verbs:
-        - pet   # This adds pet to the soldier verbs
+        - pet
 
   - id: spearman
     add:
       verbs:
-        - pet   # This adds pet to the soldier verbs
+        - pet
 
   - id: archer
     add:
       verbs:
-        - pet   # This adds pet to the soldier verbs
+        - pet
 
   - id: knight
     add:
       verbs:
-        - pet   # This adds pet to the soldier verbs
+        - pet
 
   - id: mage
     add:
       verbs:
-        - pet   # This adds pet to the soldier verbs
+        - pet
 
   - id: merman
     add:
       verbs:
-        - pet   # This adds pet to the soldier verbs
+        - pet
 
   - id: villager
     add:
       verbs:
-        - pet   # This adds pet to the soldier verbs
+        - pet
 
+  - id: commander_caesar
+    add:
+      verbs:
+        - pet
+
+  - id: commander_darkmercia
+    add:
+      verbs:
+        - pet
+
+  - id: commander_elodie
+    add:
+      verbs:
+        - pet
+
+  - id: commander_emeric
+    add:
+      verbs:
+        - pet
+
+  - id: commander_greenfinger
+    add:
+      verbs:
+        - pet
+
+  - id: commander_koji
+    add:
+      verbs:
+        - pet
+
+  - id: commander_mercia
+    add:
+      verbs:
+        - pet
+
+  - id: commander_mercival
+    add:
+      verbs:
+        - pet
+
+  - id: commander_nuru
+    add:
+      verbs:
+        - pet
+
+  - id: commander_ragna
+    add:
+      verbs:
+        - pet
+
+  - id: commander_ryota
+    add:
+      verbs:
+        - pet
+
+  - id: commander_sedge
+    add:
+      verbs:
+        - pet
+
+  - id: commander_sigrid
+    add:
+      verbs:
+        - pet
+
+  - id: commander_tenri
+    add:
+      verbs:
+        - pet
+
+  - id: commander_valder
+    add:
+      verbs:
+        - pet
 ...

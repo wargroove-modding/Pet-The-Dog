@@ -48,8 +48,8 @@ function Pet:execute(unit, targetPos, strParam, path)
 
     Wargroove.spawnMapAnimation(unit.pos, 0, "fx/heal_unit")
     Wargroove.spawnMapAnimation(targetPos, 0, "fx/heal_unit")
-    Wargroove.playPositionlessSound("caesar/caesarShoutExcited")
-    --Wargroove.playPositionlessSound("caesar/caesarSoldierHeartFoley")
+    --Wargroove.playPositionlessSound("sfx/caesar/caesarShoutExcited")
+    Wargroove.playPositionlessSound("sfx/caesar/caesarSoldierHeartFoley")
 
     unit:setHealth(unit.health + healAmount, unit.id)
     targetUnit:setHealth(targetUnit.health + dogHealAmount, unit.id)
@@ -65,6 +65,64 @@ function Pet:execute(unit, targetPos, strParam, path)
     Wargroove.waitTime(0.5)
 
     Wargroove.unsetFacingOverride(unit.id)
+end
+
+function Pet:generateOrders(unitId, canMove)
+    local orders = {}
+
+    local unit = Wargroove.getUnitById(unitId)
+    if not self:canExecuteAnywhere(unit) then
+        return orders
+    end
+
+    local unitClass = Wargroove.getUnitClass(unit.unitClassId)
+    local movePositions = {}
+    if canMove then
+        movePositions = Wargroove.getTargetsInRange(unit.pos, unitClass.moveRange, "empty")
+    end
+    table.insert(movePositions, unit.pos)
+
+    for i, pos in ipairs(movePositions) do
+        Wargroove.pushUnitPos(unit, pos)
+        local targets = Wargroove.getTargetsInRangeAfterMove(unit, pos, pos, 1, "unit")
+        for j, targetPos in ipairs(targets) do
+            if canExecuteWithTarget(unit, pos, targetPos, "") and unit.health ~= 100 then
+                table.insert(orders, { targetPosition = targetPos, strParam = "", movePosition = pos, endPosition = pos })
+            end
+        end
+        Wargroove.popUnitPos()
+    end
+
+    return orders
+end
+
+function Pet:getScore(unitId, order)
+    local unit = Wargroove.getUnitById(unitId)
+    local targetUnit = Wargroove.getUnitAt(order.targetPosition)
+
+    -- Calculate self-heal amount and score
+    local selfHealAmount = math.min(healAmount, 100 - unit.health)
+    local unitValue = math.sqrt(unit.unitClass.cost / 100)
+    local healScore = unitValue * selfHealAmount/healAmount
+
+    -- Calculate value of healing the dog
+    local healingAmount = 0
+    if targetUnit ~= nil then
+        local targetClass = targetUnit.unitClass
+        if Wargroove.areAllies(targetUnit.playerId, unit.playerId) and (not targetClass.isStructure) then
+            healingAmount = math.min(dogHealAmount, 100 - u.health)
+            local unitValue = math.sqrt(targetClass.cost / 100)
+            if targetClass.isCommander then
+                unitValue = 10
+            end
+            healScore = healScore + (healingAmount / 100) * unitValue
+        end
+    end
+
+    return { score = healScore, healthDelta = selfHealAmount, introspection = {
+        { key = "healScore", value = healScore },
+        { key = "selfHealAmount", value = selfHealAmount },
+        { key = "dogHealAmount", value = healingAmount }}}
 end
 
 return Pet

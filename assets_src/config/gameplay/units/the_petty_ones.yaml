@@ -37,11 +37,6 @@ modifyingUnitClasses:
       verbs:
         - pet
 
-  - id: commander_caesar
-    add:
-      verbs:
-        - pet
-
   - id: commander_darkmercia
     add:
       verbs:

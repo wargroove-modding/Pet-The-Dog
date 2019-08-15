@@ -1,0 +1,7 @@
+---
+actions:
+  - type: play
+    clips: [ sfx/caesar/caesarSoldierHeartFoley.ogg ]
+    group: voice
+    delay: 0.3
+...

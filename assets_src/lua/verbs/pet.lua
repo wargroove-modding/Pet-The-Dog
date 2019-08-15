@@ -14,6 +14,15 @@ function Pet:getTargetType()
     return "unit"
 end
 
+local function isPettable(unit, targetUnit)
+    if not Wargroove.areAllies(unit.playerId, targetUnit.playerId) then
+        return false
+    end
+    
+    return targetUnit.unitClass.id == "dog" or targetUnit.unitClass.id == "turtle"
+        or targetUnit.unitClass.id == "commander_caesar"
+end
+
 function Pet:canExecuteWithTarget(unit, endPos, targetPos, strParam)
     if not self:canSeeTarget(targetPos) then
         return false
@@ -21,7 +30,7 @@ function Pet:canExecuteWithTarget(unit, endPos, targetPos, strParam)
 
     local targetUnit = Wargroove.getUnitAt(targetPos)
 
-    return targetUnit ~= nil and Wargroove.areAllies(unit.playerId, targetUnit.playerId) and (targetUnit.unitClass.id == "dog" or targetUnit.unitClass.id == "turtle" or targetUnit.unitClass.id == "commander_caesar")
+    return targetUnit ~= nil and isPettable(unit, targetUnit)
 end
 
 function Pet:execute(unit, targetPos, strParam, path)
@@ -39,6 +48,7 @@ function Pet:execute(unit, targetPos, strParam, path)
 
     Wargroove.setFacingOverride(unit.id, facingOverride)
 
+    Wargroove.playPositionlessSound("dogPettingSound")
     Wargroove.moveUnitToOverride(unit.id, unit.pos, xMove, yMove, 10)
     while (Wargroove.isLuaMoving(unit.id)) do
         coroutine.yield()
@@ -48,8 +58,6 @@ function Pet:execute(unit, targetPos, strParam, path)
 
     Wargroove.spawnMapAnimation(unit.pos, 0, "fx/heal_unit")
     Wargroove.spawnMapAnimation(targetPos, 0, "fx/heal_unit")
-    --Wargroove.playPositionlessSound("sfx/caesar/caesarShoutExcited")
-    Wargroove.playPositionlessSound("sfx/caesar/caesarSoldierHeartFoley")
 
     unit:setHealth(unit.health + healAmount, unit.id)
     targetUnit:setHealth(targetUnit.health + dogHealAmount, unit.id)
@@ -71,10 +79,6 @@ function Pet:generateOrders(unitId, canMove)
     local orders = {}
 
     local unit = Wargroove.getUnitById(unitId)
-    if not self:canExecuteAnywhere(unit) then
-        return orders
-    end
-
     local unitClass = Wargroove.getUnitClass(unit.unitClassId)
     local movePositions = {}
     if canMove then
@@ -82,15 +86,16 @@ function Pet:generateOrders(unitId, canMove)
     end
     table.insert(movePositions, unit.pos)
 
-    for i, pos in ipairs(movePositions) do
-        Wargroove.pushUnitPos(unit, pos)
+    for i, pos in pairs(movePositions) do
         local targets = Wargroove.getTargetsInRangeAfterMove(unit, pos, pos, 1, "unit")
         for j, targetPos in ipairs(targets) do
-            if canExecuteWithTarget(unit, pos, targetPos, "") and unit.health ~= 100 then
-                table.insert(orders, { targetPosition = targetPos, strParam = "", movePosition = pos, endPosition = pos })
+            local targetUnit = Wargroove.getUnitAt(targetPos)
+            if targetUnit ~= nil then
+                if isPettable(unit, targetUnit) then
+                    orders[#orders+1] = { targetPosition = targetPos, strParam = "", movePosition = pos, endPosition = pos }
+                end
             end
         end
-        Wargroove.popUnitPos()
     end
 
     return orders
@@ -110,12 +115,12 @@ function Pet:getScore(unitId, order)
     if targetUnit ~= nil then
         local targetClass = targetUnit.unitClass
         if Wargroove.areAllies(targetUnit.playerId, unit.playerId) and (not targetClass.isStructure) then
-            healingAmount = math.min(dogHealAmount, 100 - u.health)
-            local unitValue = math.sqrt(targetClass.cost / 100)
+            healingAmount = math.min(dogHealAmount, 100 - targetUnit.health)
+            local dogUnitValue = math.sqrt(targetClass.cost / 100)
             if targetClass.isCommander then
-                unitValue = 10
+                dogUnitValue = 10
             end
-            healScore = healScore + (healingAmount / 100) * unitValue
+            healScore = healScore + (healingAmount / 100) * dogUnitValue
         end
     end
 

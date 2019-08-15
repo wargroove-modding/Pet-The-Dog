@@ -1,0 +1,7 @@
+---
+actions:
+  - type: play
+    clips: [ sfx/caesar/caesarAttackFoley.ogg ]
+    group: sfx
+    delay: 0.08
+...
